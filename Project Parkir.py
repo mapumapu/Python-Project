@@ -1,72 +1,95 @@
-import datetime
+import datetime, math
 
-model = {}
-parking_space = 20
+daftar_kendaraan = {}
+maximum_tempat_parkir = 20
 
 
-def add_vehicle(vehicle, time_in):
+def kendaraan_masuk(kendaraan, waktu_masuk):
 
-    if len(model) == parking_space:
+    if len(daftar_kendaraan) == maximum_tempat_parkir:
         print('Parkir Penuh')
     else:
-        model[vehicle] = time_in
+        daftar_kendaraan[kendaraan] = waktu_masuk
 
 
-def view_add_vehicle():
+def tampilan_kendaraan_masuk():
     print("MASUK PARKIR")
 
     plat_nomor = input("Plat Nomor(x jika batal) : ")
     time_now = datetime.datetime.now()
 
-    if plat_nomor is "x":
-        view_main_menu()
+    # Untuk input waktu secara manual
+    time_str = '2023-03-17 01:17:16.436536'
+    time_manual = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S.%f')
+
+    if plat_nomor == "x":
+        tampilan_menu_utama()
     else:
-        add_vehicle(plat_nomor, time_now)
+        kendaraan_masuk(plat_nomor, time_manual)
 
 
-def out_vehicle(vehicle, time_out):
-    time_in = model.get(vehicle)
-    time_diff = time_out - time_in
-    time_secs = time_diff.total_seconds()
-    time_hrs = time_secs / (60 * 60)
+def kendaraan_keluar(kendaraan, waktu_keluar):
+    waktu_masuk = daftar_kendaraan.get(kendaraan)
+    perbedaan_waktu = waktu_keluar - waktu_masuk
+    waktu_dalam_jam = perbedaan_waktu.total_seconds() / 3600
 
-    if time_hrs < 60:
-        total_bill = 2000
+    if waktu_dalam_jam < 1:
+        total_biaya_parkir = 2000
     else:
-        total_bill = time_hrs * 2000
+        total_biaya_parkir = math.ceil(waktu_dalam_jam) * 2000
 
-    return total_bill
+    return total_biaya_parkir
 
 
-def view_out_vehicle():
+def tampilan_kendaraan_keluar():
     print("KELUAR PARKIR")
 
     plat_nomor = input("Plat Nomor : ")
     time_now = datetime.datetime.now()
 
-    if plat_nomor is "x":
-        view_main_menu()
+    # Untuk input waktu secara manual
+    time_str = '2023-03-17 05:40:16.436536'
+    time_manual = datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S.%f')
+
+    if plat_nomor == "x":
+        tampilan_menu_utama()
     else:
-        print(f"Total Biaya Parkir sebesar : Rp. {out_vehicle(plat_nomor, time_now)}")
+        print(f"Total Biaya Parkir sebesar : Rp. {kendaraan_keluar(plat_nomor, time_manual)}")
 
 
-def view_main_menu():
+def tampilan_daftar_kendaraan():
+    if len(daftar_kendaraan) == 0:
+        print("Tidak ada kendaraan yang diparkir saat ini.")
+    else:
+        print("Daftar Kendaraan yang Diparkir:")
+        for kendaraan in daftar_kendaraan:
+            print(f"{kendaraan} ({daftar_kendaraan[kendaraan]})")
+
+
+def tampilan_menu_utama():
     while True:
         print("Menu :")
         print("1 Kendaraan Masuk ")
         print("2 Kendaraan Keluar")
-        print("3 Keluar")
+        print("3 Lihat Daftar Kendaraan")
+        print("4 Keluar")
 
         input_user = input("Pilih Menu : ")
 
-        if input_user is "1":
-            view_add_vehicle()
-        elif input_user is "2":
-            view_out_vehicle()
-        elif input_user is "3":
+        if input_user == "1":
+            tampilan_kendaraan_masuk()
+        elif input_user == "2":
+            tampilan_kendaraan_keluar()
+        elif input_user == "3":
+            tampilan_daftar_kendaraan()
+        elif input_user == "4":
             break
         else:
             print("Input Salah")
 
 
-view_main_menu()
+tampilan_menu_utama()
+
+#perlu tambah waktu keluar dan masuk di tampilan kendaraan keluar
+#bagusin tampilan outputnya
+
