@@ -16,6 +16,8 @@ def tampilan_kendaraan_masuk():
     print("MASUK PARKIR")
 
     plat_nomor = input("Plat Nomor(x jika batal) : ")
+    
+    # Untuk input waktu secara real-time
     time_now = datetime.datetime.now()
 
     # Untuk input waktu secara manual
@@ -25,6 +27,7 @@ def tampilan_kendaraan_masuk():
     if plat_nomor == "x":
         tampilan_menu_utama()
     else:
+        # jgn lupa ubah variable time_manual ke time_now kalau ingin pakai waktu yang real-time
         kendaraan_masuk(plat_nomor, time_manual)
 
 
@@ -38,13 +41,15 @@ def kendaraan_keluar(kendaraan, waktu_keluar):
     else:
         total_biaya_parkir = math.ceil(waktu_dalam_jam) * 2000
 
-    return total_biaya_parkir
+    return waktu_masuk, total_biaya_parkir
 
 
 def tampilan_kendaraan_keluar():
     print("KELUAR PARKIR")
 
     plat_nomor = input("Plat Nomor : ")
+    
+    # Untuk input waktu secara real-time
     time_now = datetime.datetime.now()
 
     # Untuk input waktu secara manual
@@ -54,7 +59,13 @@ def tampilan_kendaraan_keluar():
     if plat_nomor == "x":
         tampilan_menu_utama()
     else:
-        print(f"Total Biaya Parkir sebesar : Rp. {kendaraan_keluar(plat_nomor, time_manual)}")
+        # jgn lupa ubah variable time_manual ke time_now kalau ingin pakai waktu yang real-time
+        waktu_masuk, total_biaya_parkir = kendaraan_keluar(plat_nomor, time_manual)
+        print(f"Plat Nomor : {plat_nomor}")
+        print(f"Waktu Masuk : {waktu_masuk}")
+        print(f"Waktu Keluar : {time_manual}")
+        print(f"Total durasi parkir(jam:menit:detik) : {time_manual - waktu_masuk}")
+        print(f"Total Biaya Parkir : Rp. {total_biaya_parkir}")
 
 
 def tampilan_daftar_kendaraan():
